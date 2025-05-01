@@ -1,5 +1,6 @@
 import numpy as np
 from own_package import paths_attributes as pa
+import pickle as pkl
 
 OUTPUT_DIR = pa.OUTPUT_DIR
 
@@ -75,3 +76,39 @@ deutsche_laendernamen = ['Niederlande', 'Belgien', 'Vereinigtes Königreich',
 
 popul_tbl["Land"] = np.array(deutsche_laendernamen, dtype='U20')
 print(popul_tbl)
+
+cities_and_times_in = pa.SOURCE_DIR / "cities_and_times.pkl"
+cities_and_times_out = pa.OUTPUT_DIR / "cities_and_times_b.csv"
+
+
+fh = open(cities_and_times_in, "rb")
+cities_and_times = pkl.load(fh)
+for i in range(5):
+    print(cities_and_times[i])
+
+time_type = np.dtype([
+    ("city", "U30"),
+    ("day", "U3"),
+    ("time", [("h", int), ("min", int)])
+])
+
+times = np.array(cities_and_times, dtype=time_type)
+print(times[:4])
+
+lst = []
+for row in times:
+    t = row[2]
+    t = f"{t[0]:02d}:{t[1]:02d}"
+    lst.append((row[0], row[1], t))
+
+time_type = np.dtype([
+    ('city', 'U30'),
+    ('day', 'U3'),
+    ('time', 'U5')])
+
+times2  = np.array(lst, dtype=time_type)
+print( times2[:10])
+
+with open(cities_and_times_out, "w", encoding="utf-8") as f:
+    for city_data in times2:
+        f.write(",".join(city_data) +"\n")
