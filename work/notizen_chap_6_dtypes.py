@@ -20,7 +20,7 @@ print(repr(x))
 print(x["density"])
 
 laender_dtype = np.dtype([
-    ("country", "S20"),
+    ("country", "O"),   # O für Objekt speichert ohne präfix b, im Gegenteil zu 'S20'
     ("density", "i4"),
     ("area", "i4"),
     ("population", "i4")
@@ -51,3 +51,27 @@ print(population_table['area'][2:5])
 population_table_path = OUTPUT_DIR / "population_table_b.csv"
 
 np.savetxt(population_table_path, population_table,fmt="%s;%d;%d;%d", delimiter=";")
+
+dtype_populatio_tbl = np.dtype([
+    ("country", "U20"),
+    ("density",'i4'),
+    ("area", "i4"),
+    ("population", "i4")
+])
+
+popul = np.genfromtxt(population_table_path, dtype=dtype_populatio_tbl, delimiter=";")
+popul_tbl = np.loadtxt(population_table_path, dtype=dtype_populatio_tbl, delimiter=";")
+deutsche_spaltennamen = ('Land',
+'Bevölkerungsdichte',
+'Fläche',
+'Bevölkerung')
+popul_tbl.dtype.names = deutsche_spaltennamen
+print(popul_tbl["Land"])
+
+deutsche_laendernamen = ['Niederlande', 'Belgien', 'Vereinigtes Königreich',
+'Deutschland', 'Liechtenstein', 'Italien', 'Schweiz',
+'Luxemburg', 'Frankreich', 'Österreich', 'Griechenland',
+'Irland', 'Schweden', 'Finnland', 'Norwegen']
+
+popul_tbl["Land"] = np.array(deutsche_laendernamen, dtype='U20')
+print(popul_tbl)
