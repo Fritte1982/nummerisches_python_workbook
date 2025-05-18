@@ -1,5 +1,5 @@
 import numpy as np
-from own_package import paths_attributes as pa
+from own_package import path_attributes as pa
 import pickle as pkl
 
 OUTPUT_DIR = pa.OUTPUT_DIR
