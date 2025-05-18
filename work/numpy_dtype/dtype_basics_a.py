@@ -62,6 +62,11 @@ dt = np.dtype([("country", "U20"),                   # U = Unicode string, max. 
                ("area", "i4"),
                ("population", "i4")])
 
+dt = np.dtype([("country", "U30"),                   # U = Unicode string, max. 30 Zeichen
+               ("density","i4"),
+               ("area", "i4"),
+               ("population", "i4")])
+
 population_table = np.array([
 ('Netherlands', 393, 41526, 16928800),
 ('Belgium', 337, 30510, 11007020),
@@ -82,3 +87,18 @@ dtype=dt)
 print(population_table[:4])
 
 print(population_table.dtype.names)
+
+population_table.dtype.names = ('Land',
+'Bevölkerungsdichte',
+'Fläche',
+'Bevölkerung')
+
+print(population_table["Land"])
+
+lands = ["Niederlande", "Belgien", "Vereinigtes Königreich",
+         "Deutschland", "Lichtenstein", "Italien", "Schweiz",
+         "Luxemburg", "Frankreich", "Österreich", "Griechenland",
+         "Irland", "Schweden", "Finnland", "Norwegen"]
+
+population_table["Land"] = np.array(lands, dtype="<U27")
+print(population_table)
